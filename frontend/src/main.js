@@ -5,5 +5,12 @@ import "./index.css";
 import App from "./App.vue";
 import store from "./store";
 import router from "./router";
+import currencyUSD from "./filters/currency";
 
-createApp(App).use(store).use(router).mount("#app");
+const app = createApp(App);
+
+app.use(store).use(router).mount("#app");
+
+app.config.globalProperties.$filters = {
+    currencyUSD,
+};
