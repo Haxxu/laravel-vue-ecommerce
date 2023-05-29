@@ -13,7 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();
+            // $table->id();
+            $table->unsignedBigInteger('user_id')->primary();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone')->nullable();

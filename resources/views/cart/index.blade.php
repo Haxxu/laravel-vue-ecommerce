@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="container lg:w-2/3 xl:w-2/3 mx-auto">
-        <h1 class="text-3xl font-bold mb-6">Your Cart Items</h1>
+    <div class="container mx-auto lg:w-2/3 xl:w-2/3">
+        <h1 class="mb-6 text-3xl font-bold">Your Cart Items</h1>
 
         <div x-data="{
             cartItems: {{ json_encode(
@@ -21,16 +21,16 @@
             get cartTotal() {
                 return this.cartItems.reduce((accum, next) => accum + next.price * next.quantity, 0).toFixed(2)
             },
-        }" class="bg-white p-4 rounded-lg shadow">
+        }" class="p-4 bg-white rounded-lg shadow">
             <!-- Product Items -->
             <template x-if="cartItems.length">
                 <div>
                     <!-- Product Item -->
                     <template x-for="product of cartItems" :key="product.id">
                         <div x-data="productItem(product)">
-                            <div class="w-full flex flex-col sm:flex-row items-center gap-4 flex-1">
+                            <div class="flex flex-col items-center flex-1 w-full gap-4 sm:flex-row">
                                 <a :href="product.href"
-                                    class="w-36 h-32 flex items-center justify-center overflow-hidden">
+                                    class="flex items-center justify-center h-32 overflow-hidden w-36">
                                     <img :src="product.image" class="object-cover" alt="" />
                                 </a>
                                 <div class="flex flex-col justify-between flex-1">
@@ -40,12 +40,12 @@
                                             $<span x-text="product.price"></span>
                                         </span>
                                     </div>
-                                    <div class="flex justify-between items-center">
+                                    <div class="flex items-center justify-between">
                                         <div class="flex items-center">
                                             Qty:
                                             <input type="number" min="1" x-model="product.quantity"
                                                 @change="changeQuantity()"
-                                                class="ml-3 py-1 border-gray-200 focus:border-purple-600 focus:ring-purple-600 w-16" />
+                                                class="w-16 py-1 ml-3 border-gray-200 focus:border-purple-600 focus:ring-purple-600" />
                                         </div>
                                         <a href="#" @click.prevent="removeItemFromCart()"
                                             class="text-purple-600 hover:text-purple-500">Remove</a>
@@ -58,19 +58,26 @@
                     </template>
                     <!-- Product Item -->
 
-                    <div class="border-t border-gray-300 pt-4">
+                    <div class="pt-4 border-t border-gray-300">
                         <div class="flex justify-between">
                             <span class="font-semibold">Subtotal</span>
                             <span id="cartTotal" class="text-xl" x-text="`$${cartTotal}`"></span>
                         </div>
-                        <p class="text-gray-500 mb-6">
+                        <p class="mb-6 text-gray-500">
                             Shipping and taxes calculated at checkout.
                         </p>
 
+                        <form action="" method="post">
+                            @csrf
+                            <button type="submit" class="w-full py-3 text-lg btn-primary">
+                                Proceed to Checkout
+                            </button>
+                        </form>
+
                         {{-- <form action="{{ route('cart.checkout') }}" method="post">
                             @csrf
-                            <button type="submit" class="btn-primary w-full py-3 text-lg">
-                                Proceed to Checkout
+                            <button type="submit" class="w-full py-3 text-lg btn-primary">
+                                Proceed to Checkout`
                             </button>
                         </form> --}}
                     </div>
@@ -78,7 +85,7 @@
                 <!--/ Product Items -->
             </template>
             <template x-if="!cartItems.length">
-                <div class="text-center py-8 text-gray-500">
+                <div class="py-8 text-center text-gray-500">
                     You don't have any items in cart
                 </div>
             </template>
